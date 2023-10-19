@@ -34,6 +34,17 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+
+    // // get all product of specific brand 
+
+app.get("/product/:brandName", async (req, res) => {
+  const brandName = req.params.brandName;
+  const query = { brandName : brandName };
+  const filterBrandName = productCollection.find(query);
+  const result = await filterBrandName.toArray()
+      res.send(result);
+});
+
     // product added in database by post
     app.post("/product", async (req, res) => {
       const product = req.body;
@@ -63,12 +74,3 @@ app.listen(port, () => {
 
 
 
-// // get all product only  brand form database
-
-// app.get("/product/:brandName", async (req, res) => {
-//   const brandName = req.params.brandName;
-//   const query = { brandName : brandName };
-//   const filterBrandName = productCollection.find(query);
-//   const result = await filterBrandName.toArray()
-//       res.send(result);
-// });
