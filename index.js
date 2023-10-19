@@ -27,23 +27,32 @@ async function run() {
 
     const database = client.db("BrandProduct");
     const productCollection = database.collection("product");
+    const myCartCollection = database.collection("myCart");
+
 
     // get product form database
+
     app.get("/product", async (req, res) => {
       const cursor = productCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
+    // get all product only brand form database
 
-    // // get all product of specific brand 
-
-app.get("/product/:brandName", async (req, res) => {
-  const brandName = req.params.brandName;
-  const query = { brandName : brandName };
-  const filterBrandName = productCollection.find(query);
-  const result = await filterBrandName.toArray()
+    app.get("/product/:brandName", async (req, res) => {
+      const brandName = req.params.brandName;
+      const query = { brandName : brandName };
+      const filterBrandName = productCollection.find(query);
+      const result = await filterBrandName.toArray()
       res.send(result);
-});
+    });
+   
+    // get my product cart form database
+    app.get("/my-cart", async (req, res) => {
+      const cursor = myCartCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
     // product added in database by post
     app.post("/product", async (req, res) => {
@@ -51,6 +60,13 @@ app.get("/product/:brandName", async (req, res) => {
       const result = await productCollection.insertOne(product);
       res.send(result);
     });
+
+    // myCart add in database 
+    app.post('/my-cart',async(req,res)=>{
+          const myCart = req.body
+          const result = await myCartCollection.insertOne(myCart)
+          res.send(result)
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -71,6 +87,3 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-
-
-
