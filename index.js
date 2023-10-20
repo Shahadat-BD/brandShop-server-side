@@ -46,7 +46,25 @@ async function run() {
       const result = await filterBrandName.toArray()
       res.send(result);
     });
-   
+    
+    //  get specific user added product
+
+    app.get("/my-cart/:id",async(req,res)=>{
+         const id = req.params.id
+         const query = {_id : id}
+         const result = await myCartCollection.findOne(query)
+         res.send(result)
+    })
+     
+    // user product delete 
+ 
+    app.delete('/my-cart/:id',async(req,res)=>{
+      const id = req.params.id
+      const query = { _id : id };
+      const result = await myCartCollection.deleteOne(query);
+        res.send(result)
+    })
+
     // get my product cart form database
     app.get("/my-cart", async (req, res) => {
       const cursor = myCartCollection.find();
