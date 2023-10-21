@@ -85,7 +85,7 @@ async function run() {
         productName : user.productName,
         rating : user.rating,
         price : user.price,
-        category : user.category, 
+        type : user.type, 
         productDetails : user.productDetails,
         brandImage  : user.brandImage,
         productImage : user.productImage
